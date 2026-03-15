@@ -8,11 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUI.TerminalInputer" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Presenters\" />
+    <PackageReference Include="TUI.TerminalInputer" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

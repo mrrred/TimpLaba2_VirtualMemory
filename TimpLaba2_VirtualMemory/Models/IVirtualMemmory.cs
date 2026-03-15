@@ -9,6 +9,8 @@ namespace TimpLaba2_VirtualMemory.Models
         void CreateFile(string fileName, string valueType, int? stringLength);
 
         IVirtualMemmoryValueWorker OpenFile(string fileName);
+
+        void CloseFile();
     }
 
     public interface IVirtualMemmoryValueWorker : IDisposable
