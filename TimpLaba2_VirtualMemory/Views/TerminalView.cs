@@ -41,9 +41,17 @@ namespace TimpLaba2_VirtualMemory.Views
             ITerminalCommand print = new TerminalCommand("Input",
                 new ArgumentFormatParser("(%a)"), printValueCommand);
             ITerminalCommand help = new TerminalCommand("Help",
-                null, createFileCommand);
+                null, helpCommand);
             ITerminalCommand exit = new TerminalCommand("Exit",
                 null, exitTerminalCommand);
+
+            RegisterCommand(createInt);
+            RegisterCommand(createChar);
+            RegisterCommand(open);
+            RegisterCommand(input);
+            RegisterCommand(print);
+            RegisterCommand(help);
+            RegisterCommand(exit);
         }
 
         public void DisplayMessage(string message)

@@ -9,11 +9,13 @@ namespace TimpLaba2_VirtualMemory.Presenters
 {
     public class VMTerminalPresenter : IVMTerminalPresenter<string[]>
     {
-        protected ITerminalView _view;
+        protected ITerminalView? _view;
         protected IVirtualMemmoryFileWorker _fileWorker;
         protected IVirtualMemmoryValueWorker? _valueWorker = null;
 
-        public VMTerminalPresenter(ITerminalView view, IVirtualMemmoryFileWorker fileWorker)
+        public ITerminalView View { set { _view = value; } }
+
+        public VMTerminalPresenter(ITerminalView? view, IVirtualMemmoryFileWorker fileWorker)
         {
             _view = view;
             _fileWorker = fileWorker;
@@ -23,7 +25,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
         {
             if (arguments.Length < 2 || arguments.Length > 3)
             {
-                _view.DisplayError("Not enough arguments for Create command.");
+                _view?.DisplayError("Not enough arguments for Create command.");
                 return;
             }
 
@@ -40,7 +42,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
                     }
                     catch (Exception ex)
                     {
-                        _view.DisplayError(ex.Message);
+                        _view?.DisplayError(ex.Message);
                     }
                 }
                 else
@@ -49,7 +51,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
 
                     if (!int.TryParse(arguments[2], out typeLength))
                     {
-                        _view.DisplayError("Invalid type length argument for Create command.");
+                        _view?.DisplayError("Invalid type length argument for Create command.");
                         return;
                     }
 
@@ -60,7 +62,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
                     }
                     catch (Exception ex)
                     {
-                        _view.DisplayError(ex.Message);
+                        _view?.DisplayError(ex.Message);
                     }
                 }
             }            
@@ -70,7 +72,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
         {
             if (arguments.Length != 1)
             {
-                _view.DisplayError("Not enough arguments for Open command.");
+                _view?.DisplayError("Not enough arguments for Open command.");
                 return;
             }
 
@@ -80,7 +82,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
             }
             catch (Exception ex)
             {
-                _view.DisplayError(ex.Message);
+                _view?.DisplayError(ex.Message);
             }
         }
 
@@ -88,13 +90,13 @@ namespace TimpLaba2_VirtualMemory.Presenters
         {
             if (_valueWorker == null)
             {
-                _view.DisplayError("File doesn't open.");
+                _view?.DisplayError("File doesn't open.");
                 return;
             }
 
             if (arguments.Length != 2)
             {
-                _view.DisplayError("Not enough arguments for Input command.");
+                _view?.DisplayError("Not enough arguments for Input command.");
                 return;
             }
 
@@ -103,7 +105,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
 
             if (!int.TryParse(arguments[0], out index))
             {
-                _view.DisplayError("Index should be integer");
+                _view?.DisplayError("Index should be integer");
                 return;
             }
 
@@ -115,7 +117,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
             }
             catch (Exception ex)
             {
-                _view.DisplayError(ex.Message);
+                _view?.DisplayError(ex.Message);
             }
         }
 
@@ -123,13 +125,13 @@ namespace TimpLaba2_VirtualMemory.Presenters
         {
             if (_valueWorker == null)
             {
-                _view.DisplayError("File doesn't open.");
+                _view?.DisplayError("File doesn't open.");
                 return;
             }
 
             if (arguments.Length != 1)
             {
-                _view.DisplayError("Not enough arguments for Print command.");
+                _view?.DisplayError("Not enough arguments for Print command.");
                 return;
             }
 
@@ -137,7 +139,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
 
             if (!int.TryParse(arguments[0], out index))
             {
-                _view.DisplayError("Index should be integer");
+                _view?.DisplayError("Index should be integer");
                 return;
             }
 
@@ -147,7 +149,7 @@ namespace TimpLaba2_VirtualMemory.Presenters
             }
             catch (Exception ex)
             {
-                _view.DisplayError(ex.Message);
+                _view?.DisplayError(ex.Message);
             }
         }
     }
