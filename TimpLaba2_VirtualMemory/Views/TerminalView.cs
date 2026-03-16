@@ -31,9 +31,9 @@ namespace TimpLaba2_VirtualMemory.Views
                 = new Command((string[] args) => Close());
 
             ITerminalCommand createInt = new TerminalCommand("Create",
-                new ArgumentFormatParser("%a(%a)"), createFileCommand);
+                new ArgumentFormatParser("%a(%w)"), createFileCommand);
             ITerminalCommand createChar = new TerminalCommand("Create",
-                new ArgumentFormatParser("%a(%a(%a))"), createFileCommand);
+                new ArgumentFormatParser("%a(%w(%w))"), createFileCommand);
             ITerminalCommand open = new TerminalCommand("Open",
                 new ArgumentFormatParser("%a"), openFileCommand);
             ITerminalCommand input = new TerminalCommand("Input",

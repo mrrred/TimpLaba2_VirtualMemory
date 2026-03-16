@@ -15,8 +15,8 @@ namespace TimpLaba2_VirtualMemory.Models
 
     public interface IVirtualMemmoryValueWorker : IDisposable
     {
-        void WriteValue();
+        void WriteValue(int index, string value);
 
-        void ReadValue();
+        string ReadValue(int index);
     }
 }

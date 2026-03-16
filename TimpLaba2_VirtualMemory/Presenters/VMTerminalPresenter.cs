@@ -4,7 +4,6 @@ using System.Security.AccessControl;
 using System.Text;
 using TimpLaba2_VirtualMemory.Models;
 using TimpLaba2_VirtualMemory.Views;
-using static TimpLaba2_VirtualMemory.Models.VMFileType;
 
 namespace TimpLaba2_VirtualMemory.Presenters
 {
@@ -12,11 +11,12 @@ namespace TimpLaba2_VirtualMemory.Presenters
     {
         protected ITerminalView _view;
         protected IVirtualMemmoryFileWorker _fileWorker;
-        protected IVirtualMemmoryValueWorker _valueWorker;
+        protected IVirtualMemmoryValueWorker? _valueWorker = null;
 
-        public VMTerminalPresenter(ITerminalView view)
+        public VMTerminalPresenter(ITerminalView view, IVirtualMemmoryFileWorker fileWorker)
         {
             _view = view;
+            _fileWorker = fileWorker;
         }
 
         public void CreateFile(string[] arguments)
@@ -35,7 +35,8 @@ namespace TimpLaba2_VirtualMemory.Presenters
                 {
                     try
                     {
-                        _fileWorker.CreateFile(arguments[0], new VMFileType((VMFileType.FileType)fileType, null));
+                        _fileWorker.CreateFile(arguments[0], 
+                            new VMFileType((VMFileType.FileType)fileType, null));
                     }
                     catch (Exception ex)
                     {
@@ -54,7 +55,8 @@ namespace TimpLaba2_VirtualMemory.Presenters
 
                     try
                     {
-                        _fileWorker.CreateFile(arguments[0], new VMFileType((VMFileType.FileType)fileType, typeLength));
+                        _fileWorker.CreateFile(arguments[0], 
+                            new VMFileType((VMFileType.FileType)fileType, typeLength));
                     }
                     catch (Exception ex)
                     {
@@ -68,13 +70,13 @@ namespace TimpLaba2_VirtualMemory.Presenters
         {
             if (arguments.Length != 1)
             {
-                _view.DisplayError("Not enough arguments for Create command.");
+                _view.DisplayError("Not enough arguments for Open command.");
                 return;
             }
 
             try
             {
-                _fileWorker.OpenFile(arguments[0]);
+                _valueWorker = _fileWorker.OpenFile(arguments[0]);
             }
             catch (Exception ex)
             {
@@ -84,12 +86,69 @@ namespace TimpLaba2_VirtualMemory.Presenters
 
         public void InputValue(string[] arguments)
         {
-            throw new NotImplementedException();
+            if (_valueWorker == null)
+            {
+                _view.DisplayError("File doesn't open.");
+                return;
+            }
+
+            if (arguments.Length != 2)
+            {
+                _view.DisplayError("Not enough arguments for Input command.");
+                return;
+            }
+
+            int index;
+            string value;
+
+            if (!int.TryParse(arguments[0], out index))
+            {
+                _view.DisplayError("Index should be integer");
+                return;
+            }
+
+            value = arguments[1];
+            
+            try
+            {
+                _valueWorker.WriteValue(index, value);
+            }
+            catch (Exception ex)
+            {
+                _view.DisplayError(ex.Message);
+            }
         }
 
         public void PrintValue(string[] arguments)
         {
-            throw new NotImplementedException();
+            if (_valueWorker == null)
+            {
+                _view.DisplayError("File doesn't open.");
+                return;
+            }
+
+            if (arguments.Length != 1)
+            {
+                _view.DisplayError("Not enough arguments for Print command.");
+                return;
+            }
+
+            int index;
+
+            if (!int.TryParse(arguments[0], out index))
+            {
+                _view.DisplayError("Index should be integer");
+                return;
+            }
+
+            try
+            {
+                _valueWorker.ReadValue(index);
+            }
+            catch (Exception ex)
+            {
+                _view.DisplayError(ex.Message);
+            }
         }
     }
 }
